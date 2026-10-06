@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowRight, Check, ChevronDown, ChevronLeft, ChevronRight, Clock3, MapPin, Menu, PhoneCall, Ruler, X } from 'lucide-react'
-import { cities, citiesForState, cityBySlug, cityPath, refrigeratorPrices, services, site, slugify, stateBySlug, statePages, statePath, type City } from './data'
+import { cities, citiesForState, cityBySlug, cityPath, refrigeratorPrices, serviceH1, services, site, slugify, stateBySlug, statePages, statePath, trailerOptions, type City } from './data'
 
 const money = (value: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value)
 const currentPath = () => typeof window === 'undefined' ? '/' : window.location.pathname
@@ -15,12 +15,13 @@ function Link({ href, children, className = '' }: { href: string; children: Reac
 
 function Header() {
   const [open, setOpen] = useState(false)
+  const [inventoryOpen, setInventoryOpen] = useState(false)
   return <>
     <a className="skip" href="#main">Skip to content</a>
     <header className="header"><div className="shell nav-wrap">
       <Link href="/" className="brand" aria-label="Portable Food Bank home"><img src="/portable-food-bank-logo.png" alt="Portable Food Bank" width="203" height="172"/></Link>
       <nav aria-label="Main navigation" className={open ? 'nav open' : 'nav'}>
-        <Link href="/">Home</Link><Link href="/services/">Inventory</Link><Link href="/service-areas/">Service Areas</Link><Link href="/rental-calculator/">Calculator</Link><Link href="/about-us/">About Us</Link><Link href="/blog/">Articles</Link><Link href="/contact-us/">Contact Us</Link>
+        <Link href="/">Home</Link><div className={`inventory-menu ${inventoryOpen ? 'open' : ''}`}><button type="button" aria-expanded={inventoryOpen} aria-controls="inventory-dropdown" onClick={() => setInventoryOpen(!inventoryOpen)}>Inventory <ChevronDown/></button><div className="inventory-dropdown" id="inventory-dropdown"><div><span>Kitchen family</span>{services.slice(0, 3).map((service) => <Link href={`/services/${service.slug}/`} key={service.slug}>{service.name}</Link>)}</div><div><span>Supporting trailers</span>{services.slice(3).map((service) => <Link href={`/services/${service.slug}/`} key={service.slug}>{service.name}</Link>)}</div><Link className="inventory-all" href="/services/">View all nine services <ArrowRight/></Link></div></div><Link href="/service-areas/">Service Areas</Link><Link href="/rental-calculator/">Calculator</Link><Link href="/about-us/">About Us</Link><Link href="/blog/">Articles</Link><Link href="/contact-us/">Contact Us</Link>
       </nav>
       <a className="call-card" href="tel:+18883855513" aria-label="Call Portable Food Bank at 888-385-5513"><PhoneCall/><span>Call our team<strong>888-385-5513</strong></span></a>
       <button className="menu" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X/> : <Menu/>}</button>
@@ -138,11 +139,21 @@ function Nearby({ city }: { city: City }) {
 
 function ServicesPage() { return <Layout><PageIntro eyebrow="Shared facility inventory" title="Nine facilities. One kitchen-first plan." text="Begin with cooking continuity, add dishwashing and refrigeration, then review bathroom and other supporting facility needs for the same site."/><ServicesGrid/><EquipmentPlan/><PriceTable/><FinalCTA/></Layout> }
 
+function TrailerGrid({ service }: { service: (typeof services)[number] }) {
+  const options = trailerOptions[service.slug] ?? []
+  return <section className="section trailer-catalog"><div className="shell service-content-layout"><div><div className="section-head trailer-heading"><div><span className="eyebrow">Available configurations</span><h2>Explore {service.name.toLowerCase()}.</h2></div><p>These trailer names come directly from the supplied inventory spreadsheet. Exact configuration, tier, capacity, site fit, and current availability are confirmed during the quote.</p></div><div className="trailer-grid">{options.map((option, index) => <article className="trailer-card" key={option}><img src={service.image} alt={`${option} in the ${service.name.toLowerCase()} inventory`} width="700" height="460" loading={index > 2 ? 'lazy' : undefined}/><div><span>{String(index + 1).padStart(2, '0')} · {service.family}</span><h3>{option}</h3><p>Request current availability and confirm the equipment package for your project location.</p><Link href="/contact-us/">Check this trailer <ArrowRight/></Link></div></article>)}</div></div><StickyQuoteForm serviceName={service.name}/></div></section>
+}
+
+function StickyQuoteForm({ serviceName }: { serviceName: string }) {
+  const [ready, setReady] = useState(false)
+  return <aside className="sticky-quote" aria-label={`Request ${serviceName} availability`}><span className="eyebrow">Quick availability request</span><h2>Need a trailer fast?</h2><p>Share the basics or call our 24/7 team at <a href="tel:+18883855513">888-385-5513</a>.</p><form onSubmit={(event) => { event.preventDefault(); setReady(true) }}><label>Name<input name="name" autoComplete="name" required/></label><label>Phone<input name="phone" type="tel" autoComplete="tel" required/></label><label>Project location<input name="location" required/></label><label>Needed date<input name="date" type="date"/></label><label>Service<input name="service" value={serviceName} readOnly/></label><button className="button primary" type="submit">Prepare request <ArrowRight/></button>{ready && <p className="form-note" role="status">Your details are ready. This preview does not transmit forms yet—call 888-385-5513 for immediate service.</p>}</form></aside>
+}
+
 function ServicePage({ slug }: { slug: string }) {
   const service = services.find((item) => item.slug === slug)
   if (!service) return <NotFound/>
   const isKitchen = service.family === 'Kitchen family'
-  return <Layout><Breadcrumbs labels={['Home', 'Inventory', service.name]} hrefs={['/', '/services/', `/services/${service.slug}/`]}/><section className="service-hero"><div className="shell service-hero-grid"><div><span className="eyebrow">{service.family}</span><h1>{service.name}</h1><p>{service.description}</p><Link className="button primary" href="/contact-us/">Request availability <ArrowRight/></Link></div><img src={service.image} alt={service.name} width="900" height="620"/></div></section>{isKitchen ? <><EquipmentPlan/><PriceTable/></> : <section className="section"><div className="shell narrow"><h2>Plan this facility around the whole site.</h2><p>Configuration, utilities, placement, access, rental term, and availability are reviewed with the company quote. This supporting category does not replace the JSON-defined kitchen, dishwasher, and refrigerator family.</p></div></section>}<ServicesGrid/><FinalCTA/></Layout>
+  return <Layout><Breadcrumbs labels={['Home', 'Inventory', service.name]} hrefs={['/', '/services/', `/services/${service.slug}/`]}/><section className="service-hero"><div className="shell service-hero-grid"><div><span className="eyebrow">{service.family} · nationwide rentals</span><h1>{serviceH1[service.slug]}</h1><p>{service.description}</p><Link className="button primary" href="#trailer-options">View trailer options <ArrowRight/></Link></div><img src={service.image} alt={service.name} width="900" height="620"/></div></section><div id="trailer-options"><TrailerGrid service={service}/></div>{isKitchen ? <><EquipmentPlan/><PriceTable/></> : <section className="section"><div className="shell narrow"><h2>Plan this facility around the whole site.</h2><p>Configuration, utilities, placement, access, rental term, and availability are reviewed with the company quote. This supporting category does not replace the JSON-defined kitchen, dishwasher, and refrigerator family.</p></div></section>}<ServicesGrid/><FinalCTA/></Layout>
 }
 
 function Contact() {
