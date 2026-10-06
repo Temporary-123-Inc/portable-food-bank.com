@@ -71,16 +71,30 @@ export const serviceH1: Record<string, string> = {
   'handwashing-trailers': 'Portable Handwashing Trailer Rentals for Temporary Sanitation Stations'
 }
 
-export const trailerOptions: Record<string, string[]> = {
-  'mobile-kitchen-trailers': ['24ft Mobile Kitchen', '26ft Baby Bulk Kitchen', '28ft Mobile Kitchen', '38ft Mobile Kitchen', '40ft Mobile Kitchen', '40ft Mobile Combo Kitchen', '40ft Bulk Kitchen', '40ft Bulk Combo Kitchen'],
-  'dishwashing-trailers': ['22–26ft Low Temp Dish Trailer (Tier 1–4)', '30ft Conveyor Dishwashing Trailer', '38ft Low Temp Dish Trailer (Tier 1–4)', '38ft High Temp Conveyor Dishwashing Trailer'],
-  'refrigeration-trailers': ['12ft Refrigerated Trailer (Tier 1–4)', '20ft Refrigerated Trailer (Tier 1–4)', '20ft Refrigerated Container (Tier 1–4)', '40ft Refrigerated Container (Tier 1–4)'],
-  'shower-trailers': ['20ft Shower Container (5 Stalls)', '20ft Shower Trailer (10 Stalls) with Handwashing Sink'],
-  'restroom-trailers': ['Restroom Trailer'],
-  'shower-restroom-combinations': ['13ft Luxury Shower–Restroom Combination Trailer (3 Stalls)', '22ft Luxury Shower–Restroom Combination Trailer (6 Stalls)', '30ft Luxury Shower–Restroom Combination Trailer (8 Stalls)', '30ft Luxury Shower–Restroom Combination Trailer (10 Stalls)', 'Luxury Combination Trailer (3 Stalls + 1 ADA)', 'Luxury Combination Trailer (8 Stalls + 1 ADA)'],
-  'sleeper-trailers': ['Sleeper Trailer (2 Stalls)', '20ft Contractor Accommodation', '20ft VIP Accommodation'],
-  'laundry-trailers': ['30ft Laundry Trailer (10 Washer/Dryer)', '24ft Laundry Trailer', '26–27ft Laundry Trailer (8 Washer/Dryer)', '20ft Laundry Container'],
-  'handwashing-trailers': ['Handwashing Sink Trailer']
+export const trailerOptions: Record<string, { name: string; image: string }[]> = {
+  'mobile-kitchen-trailers': [
+    ['24ft Mobile Kitchen', '24ft-mobile-kitchen'], ['26ft Baby Bulk Kitchen', '26ft-baby-bulk-kitchen'], ['28ft Mobile Kitchen', '28ft-mobile-kitchen'], ['38ft Mobile Kitchen', '38ft-mobile-kitchen'], ['40ft Mobile Kitchen', '40ft-mobile-kitchen'], ['40ft Mobile Combo Kitchen', '40ft-mobile-combo-kitchen'], ['40ft Bulk Kitchen', '40ft-bulk-kitchen'], ['40ft Bulk Combo Kitchen', '40ft-bulk-combo-kitchen']
+  ].map(([name, image]) => ({ name, image: `/images/trailers/${image}.webp` })),
+  'dishwashing-trailers': [
+    ['22–26ft Low Temp Dish Trailer (Tier 1–4)', '22-26ft-low-temp-dish'], ['30ft Conveyor Dishwashing Trailer', '30ft-conveyor-dish'], ['38ft Low Temp Dish Trailer (Tier 1–4)', '38ft-low-temp-dish'], ['38ft High Temp Conveyor Dishwashing Trailer', '38ft-high-temp-dish']
+  ].map(([name, image]) => ({ name, image: `/images/trailers/${image}.webp` })),
+  'refrigeration-trailers': [
+    ['12ft Refrigerated Trailer (Tier 1–4)', '12ft-refrigerated-trailer'], ['20ft Refrigerated Trailer (Tier 1–4)', '20ft-refrigerated-trailer'], ['20ft Refrigerated Container (Tier 1–4)', '20ft-refrigerated-container'], ['40ft Refrigerated Container (Tier 1–4)', '40ft-refrigerated-container']
+  ].map(([name, image]) => ({ name, image: `/images/trailers/${image}.webp` })),
+  'shower-trailers': [
+    ['20ft Shower Container (5 Stalls)', '20ft-shower-container-5'], ['20ft Shower Trailer (10 Stalls) with Handwashing Sink', '20ft-shower-trailer-10']
+  ].map(([name, image]) => ({ name, image: `/images/trailers/${image}.webp` })),
+  'restroom-trailers': [{ name: 'Restroom Trailer', image: '/images/trailers/restroom-trailer.webp' }],
+  'shower-restroom-combinations': [
+    ['13ft Luxury Shower–Restroom Combination Trailer (3 Stalls)', '13ft-combo-3'], ['22ft Luxury Shower–Restroom Combination Trailer (6 Stalls)', '22ft-combo-6'], ['30ft Luxury Shower–Restroom Combination Trailer (8 Stalls)', '30ft-combo-8'], ['30ft Luxury Shower–Restroom Combination Trailer (10 Stalls)', '30ft-combo-10'], ['Luxury Combination Trailer (3 Stalls + 1 ADA)', 'combo-3-ada'], ['Luxury Combination Trailer (8 Stalls + 1 ADA)', 'combo-8-ada']
+  ].map(([name, image]) => ({ name, image: `/images/trailers/${image}.webp` })),
+  'sleeper-trailers': [
+    ['Sleeper Trailer (2 Stalls)', 'sleeper-2-stalls'], ['20ft Contractor Accommodation', '20ft-contractor-accommodation'], ['20ft VIP Accommodation', '20ft-vip-accommodation']
+  ].map(([name, image]) => ({ name, image: `/images/trailers/${image}.webp` })),
+  'laundry-trailers': [
+    ['30ft Laundry Trailer (10 Washer/Dryer)', '30ft-laundry-10'], ['24ft Laundry Trailer', '24ft-laundry'], ['26–27ft Laundry Trailer (8 Washer/Dryer)', '26-27ft-laundry-8'], ['20ft Laundry Container', '20ft-laundry-container']
+  ].map(([name, image]) => ({ name, image: `/images/trailers/${image}.webp` })),
+  'handwashing-trailers': [{ name: 'Handwashing Sink Trailer', image: '/images/trailers/handwashing-sink-trailer.webp' }]
 }
 
 export const kitchenPrices = raw.service_profile.pricing.size_surcharges
