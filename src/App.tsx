@@ -19,7 +19,7 @@ function Header() {
     <a className="skip" href="#main">Skip to content</a>
     <div className="utility"><div className="shell utility-inner"><span><ShieldCheck size={15}/> Nationwide planning</span><span>Availability and final configuration are confirmed with each quote</span></div></div>
     <header className="header"><div className="shell nav-wrap">
-      <Link href="/" className="brand" aria-label="Portable Food Bank home"><span className="brand-mark"><span/></span><span><strong>PORTABLE</strong><em>FOOD BANK</em></span></Link>
+      <Link href="/" className="brand" aria-label="Portable Food Bank home"><img src="/portable-food-bank-logo.png" alt="Portable Food Bank" width="203" height="172"/></Link>
       <nav aria-label="Main navigation" className={open ? 'nav open' : 'nav'}>
         <Link href="/services/">Inventory</Link><Link href="/service-areas/">Service areas</Link><Link href="/rental-calculator/">Estimator</Link><Link href="/about-us/">How it works</Link><Link href="/contact-us/" className="nav-cta">Request availability <ArrowRight size={17}/></Link>
       </nav>
@@ -29,7 +29,7 @@ function Header() {
 }
 
 function Footer() {
-  return <footer><div className="shell footer-grid"><div><div className="brand footer-brand"><span className="brand-mark"><span/></span><span><strong>PORTABLE</strong><em>FOOD BANK</em></span></div><p>Temporary mobile kitchen facilities planned around restaurant renovations, repairs, and changing operating needs.</p></div><div><h3>Explore</h3><Link href="/services/">All nine facilities</Link><Link href="/service-areas/">Service areas</Link><Link href="/rental-calculator/">Starting estimator</Link></div><div><h3>Plan</h3><Link href="/about-us/">Rental process</Link><Link href="/contact-us/">Request availability</Link><Link href="/privacy/">Privacy</Link></div><div><h3>Important</h3><p>Pricing, route timing, site fit, configuration, and final availability are confirmed through the company quote.</p></div></div><div className="shell copyright">© 2026 Portable Food Bank. All rights reserved.</div></footer>
+  return <footer><div className="shell footer-grid"><div><Link href="/" className="brand footer-brand" aria-label="Portable Food Bank home"><img src="/portable-food-bank-logo.png" alt="Portable Food Bank" width="203" height="172"/></Link><p>Temporary mobile kitchen facilities planned around restaurant renovations, repairs, and changing operating needs.</p></div><div><h3>Explore</h3><Link href="/services/">All nine facilities</Link><Link href="/service-areas/">Service areas</Link><Link href="/rental-calculator/">Starting estimator</Link></div><div><h3>Plan</h3><Link href="/about-us/">Rental process</Link><Link href="/contact-us/">Request availability</Link><Link href="/privacy/">Privacy</Link></div><div><h3>Important</h3><p>Pricing, route timing, site fit, configuration, and final availability are confirmed through the company quote.</p></div></div><div className="shell copyright">© 2026 Portable Food Bank. All rights reserved.</div></footer>
 }
 
 function Layout({ children }: { children: React.ReactNode }) { return <><Header/><main id="main">{children}</main><Footer/></> }
