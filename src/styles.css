@@ -10,3 +10,4 @@
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 :focus-visible{outline:3px solid #0b6aa7;outline-offset:3px}
 .brand img{width:118px;height:64px;object-fit:contain}.footer-brand{width:max-content;background:var(--white);border-radius:var(--radius);padding:8px 14px;margin-bottom:20px}.footer-brand img{width:144px;height:auto}
+.utility a{display:inline-flex;align-items:center;gap:7px;font-weight:800}.utility a:hover{text-decoration:underline}.footer-grid .footer-phone{color:var(--white);font-family:var(--display);font-size:1.8rem;line-height:1}.contact-phone{display:flex;align-items:center;gap:10px;color:var(--white);font-family:var(--display);font-size:2rem;font-weight:700;margin:-2px 0 26px}.contact-phone svg{color:var(--orange)}
