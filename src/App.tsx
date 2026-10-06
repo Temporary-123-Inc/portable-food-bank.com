@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ArrowRight, Check, ChevronDown, ChevronLeft, ChevronRight, Clock3, MapPin, Menu, PhoneCall, Ruler, ShieldCheck, X } from 'lucide-react'
+import { ArrowRight, Check, ChevronDown, ChevronLeft, ChevronRight, Clock3, MapPin, Menu, PhoneCall, Ruler, X } from 'lucide-react'
 import { cities, citiesForState, cityBySlug, cityPath, refrigeratorPrices, services, site, slugify, stateBySlug, statePages, statePath, type City } from './data'
 
 const money = (value: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value)
@@ -17,12 +17,12 @@ function Header() {
   const [open, setOpen] = useState(false)
   return <>
     <a className="skip" href="#main">Skip to content</a>
-    <div className="utility"><div className="shell utility-inner"><span><ShieldCheck size={15}/> Nationwide planning</span><span><a href="tel:+18883855513" aria-label="Call Portable Food Bank at 888-385-5513"><PhoneCall size={15}/> 888-385-5513</a></span></div></div>
     <header className="header"><div className="shell nav-wrap">
       <Link href="/" className="brand" aria-label="Portable Food Bank home"><img src="/portable-food-bank-logo.png" alt="Portable Food Bank" width="203" height="172"/></Link>
       <nav aria-label="Main navigation" className={open ? 'nav open' : 'nav'}>
-        <Link href="/services/">Inventory</Link><Link href="/service-areas/">Service areas</Link><Link href="/rental-calculator/">Estimator</Link><Link href="/about-us/">How it works</Link><Link href="/contact-us/" className="nav-cta">Request availability <ArrowRight size={17}/></Link>
+        <Link href="/">Home</Link><Link href="/services/">Inventory</Link><Link href="/service-areas/">Service Areas</Link><Link href="/rental-calculator/">Calculator</Link><Link href="/about-us/">About Us</Link><Link href="/blog/">Articles</Link><Link href="/contact-us/">Contact Us</Link>
       </nav>
+      <a className="call-card" href="tel:+18883855513" aria-label="Call Portable Food Bank at 888-385-5513"><PhoneCall/><span>Call our team<strong>888-385-5513</strong></span></a>
       <button className="menu" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X/> : <Menu/>}</button>
     </div></header>
   </>
@@ -48,6 +48,10 @@ function Hero({ h1, description, price, eta, availability, variation = 0 }: { h1
   return <section className={`hero variation-${variation + 1}`}><div className="shell hero-grid"><div className="hero-copy"><span className="eyebrow">Mobile kitchen continuity planning</span><h1>{h1}</h1><p>{description}</p><div className="hero-actions"><Link className="button primary" href="/contact-us/">Request availability <ArrowRight/></Link><Link className="text-link" href="/rental-calculator/">Build a starting estimate</Link></div></div><div className="hero-side"><div className="status-row"><span className="status"><i/> {availability}</span></div><div className="metric-grid"><div><small>Starting at</small><strong>{money(price)}</strong><span>20 ft kitchen</span></div><div><small>Planning ETA</small><strong>{eta}</strong><span>route-dependent</span></div></div><Carousel/></div></div></section>
 }
 
+function HomeHero() {
+  return <section className="home-hero"><div className="hero-rings"/><div className="shell home-hero-grid"><div className="home-hero-copy"><span className="hero-badge"><i/> Nationwide temporary kitchen rentals</span><h1>Temporary mobile kitchen facility rentals</h1><p>Keep food service operating through phased renovations, repairs, and changing kitchen schedules. Start with a mobile kitchen, then add dishwashing and refrigeration—or supporting bathroom facilities—around your site plan.</p><div className="hero-actions"><Link className="button primary" href="/services/mobile-kitchen-trailers/">Explore kitchen rentals <ArrowRight/></Link><Link className="button ghost" href="#inventory">View all facilities</Link></div><small>Kitchen-first planning. The rest of the inventory stays in view.</small></div><div className="home-hero-visual"><div className="visual-note"><span>Your project.</span><strong>Start with the kitchen.</strong></div><div className="circle-image"><img src="/images/mobile-kitchen.webp" alt="Commercial stainless steel cooking line inside a mobile kitchen trailer" width="900" height="620"/><div className="image-label"><span>Kitchen continuity planning</span><strong>Mobile kitchen rentals</strong></div></div><a className="hero-call" href="tel:+18883855513"><span>Call our team</span><strong>888-385-5513</strong></a></div></div><div className="shell hero-family-rail"><Link href="/services/mobile-kitchen-trailers/"><strong>Mobile kitchens</strong><span>Lead the continuity plan</span></Link><Link href="/services/dishwashing-trailers/"><strong>Dishwashing</strong><span>Support sanitation flow</span></Link><Link href="/services/refrigeration-trailers/"><strong>Refrigeration</strong><span>Protect temporary storage</span></Link><Link href="/services/restroom-trailers/"><strong>Bathrooms</strong><span>Complete the project site</span></Link></div></section>
+}
+
 function ServicesGrid() {
   const [filter, setFilter] = useState('all')
   const visible = services.filter((service) => filter === 'all' || (filter === 'kitchen' ? service.family === 'Kitchen family' : service.family !== 'Kitchen family'))
@@ -64,17 +68,22 @@ function PriceTable({ city }: { city?: City }) {
 }
 
 function CoveragePreview() {
-  return <section className="section coverage"><div className="shell coverage-grid"><div><span className="eyebrow">Nationwide service area guides</span><h2>Find planning details for your location.</h2><p>Browse all 50 state guides and {cities.length} city pages. Each city keeps its own assigned price, ETA, service hours, incident reference, and nearby service areas.</p><Link className="button primary" href="/service-areas/">Browse all service areas</Link></div><div className="state-cloud">{statePages.slice(0, 18).map((state) => <Link href={statePath(state.state)} key={state.state}>{state.state}<span>{state.city_count} {state.city_count === 1 ? 'city' : 'cities'}</span></Link>)}</div></div></section>
+  return <section className="section coverage" id="service-area-map"><div className="shell"><div className="coverage-heading"><div><span className="eyebrow">Nationwide service areas</span><h2>Find rentals in your area.</h2></div><p>Choose a state to explore regional and city rental guides. Confirm availability and delivery timing for your exact project location with our team.</p></div><div className="coverage-map-card"><div className="map-copy"><span>Find your state</span><strong>50 states</strong><p>Every state guide connects to its assigned cities, local starting price, and delivery planning information.</p><Link className="button dark" href="/service-areas/">Browse all service areas</Link></div><img src="/us-service-map.png" alt="Map showing nationwide temporary kitchen rental coverage across the United States" width="900" height="560"/></div><div className="state-cloud">{statePages.slice(0, 12).map((state) => <Link href={statePath(state.state)} key={state.state}>{state.state}<span>{state.city_count} {state.city_count === 1 ? 'city' : 'cities'}</span></Link>)}</div></div></section>
+}
+
+function SupportingFacilities() {
+  const supporting = services.filter((service) => service.family !== 'Kitchen family').slice(0, 4)
+  return <section className="section supporting"><div className="shell supporting-grid"><div><span className="eyebrow">Supporting rental families</span><h2>A little more around the kitchen.</h2><p>Kitchen rentals lead the plan. The same inventory also keeps bathroom, shower, sleeping, and laundry facilities visible when the site needs more than food-service capacity.</p><Link className="text-link" href="/services/">Browse all rental families</Link></div><div className="support-list">{supporting.map((service) => <Link href={`/services/${service.slug}/`} key={service.slug}><img src={service.image} alt="" width="180" height="130" loading="lazy"/><span><strong>{service.name}</strong><small>{service.description}</small></span><ArrowRight/></Link>)}</div></div></section>
 }
 
 function FAQ({ items = site.faqs }: { items?: { question: string; answer: string }[] }) {
   return <section className="section faq"><div className="shell faq-grid"><div><span className="eyebrow">Planning questions</span><h2>Make the first request more useful.</h2><p>Final fit depends on the project timeline, utility plan, placement, access, approvals, and current availability.</p></div><div>{items.map((item) => <details key={item.question}><summary>{item.question}<ChevronDown/></summary><p>{item.answer}</p></details>)}</div></div></section>
 }
 
-function FinalCTA() { return <section className="final-cta"><div className="shell"><span className="eyebrow">Plan the next operating phase</span><h2>One request. A clearer temporary kitchen plan.</h2><p>Share the project location, renovation milestones, dates, menu, utilities, and the kitchen functions that need to stay online.</p><Link className="button light" href="/contact-us/">Request availability <ArrowRight/></Link></div></section> }
+function FinalCTA() { return <section className="final-cta"><div className="shell"><span className="eyebrow">Let’s get your project moving</span><h2>One call. A clearer plan.</h2><p>Tell us where, when, and which kitchen functions need to stay online. Our team will help you take the next step.</p><a className="button light" href="tel:+18883855513">888-385-5513 <ArrowRight/></a></div></section> }
 
 function Home() {
-  return <Layout><Hero h1="Mobile kitchens built around your renovation schedule." description={site.service_profile.service_description} price={site.service_profile.pricing.starting_price} eta="Location-based" availability="Available by request" variation={3}/><ServicesGrid/><Calculator compact/><Process/><PriceTable/><CoveragePreview/><FAQ/><FinalCTA/></Layout>
+  return <Layout><HomeHero/><ServicesGrid/><Calculator compact/><Process/><SupportingFacilities/><CoveragePreview/><FAQ/><FinalCTA/></Layout>
 }
 
 function Calculator({ compact = false }: { compact?: boolean }) {
