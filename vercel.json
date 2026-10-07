@@ -4,6 +4,5 @@
   "redirects": [
     { "source": "/Locations.html", "destination": "/service-areas/", "permanent": true },
     { "source": "/index.html", "destination": "/", "permanent": true }
-  ],
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  ]
 }

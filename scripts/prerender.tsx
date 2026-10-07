@@ -8,7 +8,7 @@ import { cityBySlug, routes, services, stateBySlug } from '../src/data'
 const dist = join(process.cwd(), 'dist')
 const template = await readFile(join(dist, 'index.html'), 'utf8')
 const origin = 'https://portable-food-bank.com'
-const updated = '2026-10-06'
+const updated = '2026-10-07'
 const escape = (value: string) => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;')
 
 function metadata(path: string) {
@@ -41,7 +41,9 @@ for (const path of routes) {
     .replace(/<meta property="og:title" content=".*?" \/>/, `<meta property="og:title" content="${escape(meta.title)}" />`)
     .replace(/<meta property="og:description" content=".*?" \/>/, `<meta property="og:description" content="${escape(meta.description)}" />`)
     .replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${canonical}" />`)
-    .replace('</head>', `<script type="application/ld+json">${schema}</script></head>`)
+    .replace(/<meta name="robots" content=".*?" \/>\s*/g, '')
+    .replace(/<meta name="googlebot" content=".*?" \/>\s*/g, '')
+    .replace('</head>', `<meta name="robots" content="index, follow" /><meta name="googlebot" content="index, follow" /><script type="application/ld+json">${schema}</script></head>`)
   const output = path === '/' ? join(dist, 'index.html') : path.endsWith('.html') ? join(dist, path.slice(1)) : join(dist, path.slice(1), 'index.html')
   await mkdir(dirname(output), { recursive: true })
   await writeFile(output, html)
@@ -53,4 +55,8 @@ await writeFile(join(dist, 'sitemap.xml'), sitemap)
 await writeFile(join(process.cwd(), 'public', 'sitemap.xml'), sitemap)
 
 const notFoundTemplate = template.replace('<!--app-html-->', renderToString(<App/>)).replace(/<title>.*?<\/title>/, '<title>Page not found | Portable Food Bank</title>')
+  .replace(/<meta name="robots" content=".*?" \/>\s*/g, '')
+  .replace(/<meta name="googlebot" content=".*?" \/>\s*/g, '')
+  .replace(/<link rel="canonical" href=".*?" \/>/, '')
+  .replace('</head>', '<meta name="robots" content="noindex, nofollow" /><meta name="googlebot" content="noindex, nofollow" /></head>')
 await writeFile(join(dist, '404.html'), notFoundTemplate)
