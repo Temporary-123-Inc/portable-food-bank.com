@@ -33,7 +33,38 @@ for (const path of routes) {
   const meta = metadata(path)
   const canonicalPath = path === '/Locations.html' ? '/service-areas/' : path
   const canonical = `${origin}${canonicalPath}`
-  const schema = JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebPage', name: meta.title, description: meta.description, url: canonical, isPartOf: { '@type': 'WebSite', name: 'Portable Food Bank', url: `${origin}/` } })
+  const organizationId = `${origin}/#organization`
+  const websiteId = `${origin}/#website`
+  const schema = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': organizationId,
+        name: 'Portable Food Bank',
+        url: `${origin}/`,
+        logo: `${origin}/portable-food-bank-logo.png`,
+        telephone: '+1-888-385-5513',
+        areaServed: { '@type': 'Country', name: 'United States' },
+      },
+      {
+        '@type': 'WebSite',
+        '@id': websiteId,
+        name: 'Portable Food Bank',
+        url: `${origin}/`,
+        publisher: { '@id': organizationId },
+      },
+      {
+        '@type': 'WebPage',
+        '@id': `${canonical}#webpage`,
+        name: meta.title,
+        description: meta.description,
+        url: canonical,
+        isPartOf: { '@id': websiteId },
+        about: { '@id': organizationId },
+      },
+    ],
+  })
   const html = template
     .replace('<!--app-html-->', app)
     .replace(/<title>.*?<\/title>/, `<title>${escape(meta.title)}</title>`)
