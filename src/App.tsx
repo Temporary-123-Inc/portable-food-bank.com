@@ -6,6 +6,7 @@ import { pagePath, serviceKey, submitContact } from './contact'
 const money = (value: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value)
 const currentPath = () => typeof window === 'undefined' ? '/' : window.location.pathname
 const locationHeroTitle = (location: string) => `${location} Emergency Mobile Kitchen Rentals — Dishwashing Trailers, Walk-In Coolers & Freezers for Short-Term or Long-Term Use`
+const brandName = 'Emergency Commercial Food Distribution Facilities Global'
 
 function Link({ href, children, className = '' }: { href: string; children: React.ReactNode; className?: string }) {
   const onClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -15,24 +16,28 @@ function Link({ href, children, className = '' }: { href: string; children: Reac
   return <a href={href} onClick={onClick} className={className}>{children}</a>
 }
 
+function Brand({ footer = false }: { footer?: boolean }) {
+  return <Link href="/" className={`brand${footer ? ' footer-brand' : ''}`}><span className="brand-icon" aria-hidden="true"><img src="/portable-food-bank-logo.png" alt="" width="203" height="172"/></span><strong>{brandName}</strong></Link>
+}
+
 function Header() {
   const [open, setOpen] = useState(false)
   const [inventoryOpen, setInventoryOpen] = useState(false)
   return <>
     <a className="skip" href="#main">Skip to content</a>
     <header className="header"><div className="shell nav-wrap">
-      <Link href="/" className="brand" aria-label="Portable Food Bank home"><img src="/portable-food-bank-logo.png" alt="Portable Food Bank" width="203" height="172"/></Link>
+      <Brand/>
       <nav aria-label="Main navigation" className={open ? 'nav open' : 'nav'}>
         <Link href="/">Home</Link><div className={`inventory-menu ${inventoryOpen ? 'open' : ''}`}><button type="button" aria-expanded={inventoryOpen} aria-controls="inventory-dropdown" onClick={() => setInventoryOpen(!inventoryOpen)}>Inventory <ChevronDown/></button><div className="inventory-dropdown" id="inventory-dropdown"><div><span>Kitchen family</span>{services.slice(0, 3).map((service) => <Link href={`/services/${service.slug}/`} key={service.slug}>{service.name}</Link>)}</div><div><span>Supporting trailers</span>{services.slice(3).map((service) => <Link href={`/services/${service.slug}/`} key={service.slug}>{service.name}</Link>)}</div><Link className="inventory-all" href="/services/">View all nine services <ArrowRight/></Link></div></div><Link href="/service-areas/">Service Areas</Link><Link href="/rental-calculator/">Calculator</Link><Link href="/about-us/">About Us</Link><Link href="/blog/">Articles</Link><Link href="/contact-us/">Contact Us</Link>
       </nav>
-      <a className="call-card" href="tel:+18883855513" aria-label="Call Portable Food Bank at 888-385-5513"><PhoneCall/><span>Call our team<strong>888-385-5513</strong></span></a>
+      <a className="call-card" href="tel:+18883855513" aria-label={`Call ${brandName} at 888-385-5513`}><PhoneCall/><span>Call our team<strong>888-385-5513</strong></span></a>
       <button className="menu" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X/> : <Menu/>}</button>
     </div></header>
   </>
 }
 
 function Footer() {
-  return <footer><div className="shell footer-grid"><div><Link href="/" className="brand footer-brand" aria-label="Portable Food Bank home"><img src="/portable-food-bank-logo.png" alt="Portable Food Bank" width="203" height="172"/></Link><p>Temporary mobile kitchen facilities planned around restaurant renovations, repairs, and changing operating needs.</p></div><div><h3>Explore</h3><Link href="/services/">All nine facilities</Link><Link href="/service-areas/">Service areas</Link><Link href="/rental-calculator/">Starting estimator</Link></div><div><h3>Plan</h3><Link href="/about-us/">Rental process</Link><Link href="/contact-us/">Request availability</Link><Link href="/privacy/">Privacy</Link></div><div><h3>Call us</h3><a className="footer-phone" href="tel:+18883855513">888-385-5513</a><p>Pricing, route timing, site fit, configuration, and final availability are confirmed through the company quote.</p></div></div><div className="shell copyright">© 2026 Portable Food Bank. All rights reserved.</div></footer>
+  return <footer><div className="shell footer-grid"><div><Brand footer/><p>Temporary mobile kitchen facilities planned around restaurant renovations, repairs, and changing operating needs.</p></div><div><h3>Explore</h3><Link href="/services/">All nine facilities</Link><Link href="/service-areas/">Service areas</Link><Link href="/rental-calculator/">Starting estimator</Link></div><div><h3>Plan</h3><Link href="/about-us/">Rental process</Link><Link href="/contact-us/">Request availability</Link><Link href="/privacy/">Privacy</Link></div><div><h3>Call us</h3><a className="footer-phone" href="tel:+18883855513">888-385-5513</a><p>Pricing, route timing, site fit, configuration, and final availability are confirmed through the company quote.</p></div></div><div className="shell copyright">© 2026 {brandName}. All rights reserved.</div></footer>
 }
 
 function Layout({ children }: { children: React.ReactNode }) { return <><Header/><main id="main">{children}</main><Footer/></> }
@@ -52,7 +57,7 @@ function Hero({ h1, description, price, eta, availability, variation = 0, locati
 }
 
 function HomeHero() {
-  return <section className="home-hero"><div className="hero-rings"/><div className="shell home-hero-grid"><div className="home-hero-copy"><span className="hero-badge"><i/> Nationwide temporary kitchen rentals</span><h1>Temporary mobile kitchen facility rentals</h1><p>When your kitchen is being remodeled, under construction, or suddenly out of service, Portable Food Bank keeps you serving. We rent mobile commercial kitchen trailers, dishwashing trailers, refrigeration trailers, and restroom trailers. Each one is delivered, set up, and planned around your site, schedule, and operations. Emergency and 24/7 rentals are available.</p><div className="hero-actions"><Link className="button primary" href="/services/mobile-kitchen-trailers/">Explore kitchen rentals <ArrowRight/></Link><Link className="button ghost" href="#inventory">View all facilities</Link></div><small>Kitchen-first planning. The rest of the inventory stays in view.</small></div><div className="home-hero-visual"><div className="visual-note"><span>Your project.</span><strong>Start with the kitchen.</strong></div><div className="circle-image"><img src="/images/home-mobile-kitchen.webp" alt="Commercial stainless steel cooking line inside a mobile kitchen trailer" width="900" height="620"/></div><div className="image-label"><span>Kitchen continuity planning</span><strong>Mobile kitchen rentals</strong></div><a className="hero-call" href="tel:+18883855513"><span>24/7 emergency service</span><strong>888-385-5513</strong></a></div></div><div className="shell hero-family-rail"><Link href="/services/mobile-kitchen-trailers/"><strong>Mobile kitchens</strong><span>Lead the continuity plan</span></Link><Link href="/services/dishwashing-trailers/"><strong>Dishwashing</strong><span>Support sanitation flow</span></Link><Link href="/services/refrigeration-trailers/"><strong>Refrigeration</strong><span>Protect temporary storage</span></Link><Link href="/services/restroom-trailers/"><strong>Bathrooms</strong><span>Complete the project site</span></Link></div></section>
+  return <section className="home-hero"><div className="hero-rings"/><div className="shell home-hero-grid"><div className="home-hero-copy"><span className="hero-badge"><i/> Nationwide temporary kitchen rentals</span><h1>Temporary mobile kitchen facility rentals</h1><p>When your kitchen is being remodeled, under construction, or suddenly out of service, {brandName} keeps you serving. We rent mobile commercial kitchen trailers, dishwashing trailers, refrigeration trailers, and restroom trailers. Each one is delivered, set up, and planned around your site, schedule, and operations. Emergency and 24/7 rentals are available.</p><div className="hero-actions"><Link className="button primary" href="/services/mobile-kitchen-trailers/">Explore kitchen rentals <ArrowRight/></Link><Link className="button ghost" href="#inventory">View all facilities</Link></div><small>Kitchen-first planning. The rest of the inventory stays in view.</small></div><div className="home-hero-visual"><div className="visual-note"><span>Your project.</span><strong>Start with the kitchen.</strong></div><div className="circle-image"><img src="/images/home-mobile-kitchen.webp" alt="Commercial stainless steel cooking line inside a mobile kitchen trailer" width="900" height="620"/></div><div className="image-label"><span>Kitchen continuity planning</span><strong>Mobile kitchen rentals</strong></div><a className="hero-call" href="tel:+18883855513"><span>24/7 emergency service</span><strong>888-385-5513</strong></a></div></div><div className="shell hero-family-rail"><Link href="/services/mobile-kitchen-trailers/"><strong>Mobile kitchens</strong><span>Lead the continuity plan</span></Link><Link href="/services/dishwashing-trailers/"><strong>Dishwashing</strong><span>Support sanitation flow</span></Link><Link href="/services/refrigeration-trailers/"><strong>Refrigeration</strong><span>Protect temporary storage</span></Link><Link href="/services/restroom-trailers/"><strong>Bathrooms</strong><span>Complete the project site</span></Link></div></section>
 }
 
 function ServicesGrid() {

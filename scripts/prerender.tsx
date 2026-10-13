@@ -8,22 +8,23 @@ import { cityBySlug, routes, services, stateBySlug } from '../src/data'
 const dist = join(process.cwd(), 'dist')
 const template = await readFile(join(dist, 'index.html'), 'utf8')
 const origin = 'https://portable-food-bank.com'
+const brandName = 'Emergency Commercial Food Distribution Facilities Global'
 const updated = '2026-10-07'
 const escape = (value: string) => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;')
 
 function metadata(path: string) {
-  if (path === '/') return { title: 'Mobile Kitchen Trailer Rentals | Portable Food Bank', description: 'Nationwide mobile kitchen trailer rentals for restaurant continuity during phased renovations, with dishwashing, refrigeration, and supporting facility options.' }
-  if (path === '/service-areas/' || path === '/Locations.html') return { title: 'Nationwide Mobile Kitchen Trailer Rental Service Areas | Portable Food Bank', description: 'Browse 50 state guides and 246 city pages for mobile kitchen trailer pricing, planned delivery ranges, service hours, and availability.' }
-  if (path === '/services/') return { title: 'Temporary Facility Rental Inventory | Portable Food Bank', description: 'Explore nine temporary facility categories led by mobile kitchens, dishwashing trailers, and refrigeration trailers.' }
-  if (path === '/rental-calculator/') return { title: 'Mobile Kitchen Trailer Starting Price Estimator | Portable Food Bank', description: 'Build a location-specific mobile kitchen trailer starting estimate using published city pricing and planning ETA data.' }
-  if (path === '/contact-us/') return { title: 'Request Mobile Kitchen Trailer Availability | Portable Food Bank', description: 'Prepare the project details needed for a location-specific mobile kitchen trailer rental plan and quote.' }
+  if (path === '/') return { title: `Mobile Kitchen Trailer Rentals | ${brandName}`, description: 'Nationwide mobile kitchen trailer rentals for restaurant continuity during phased renovations, with dishwashing, refrigeration, and supporting facility options.' }
+  if (path === '/service-areas/' || path === '/Locations.html') return { title: `Nationwide Mobile Kitchen Trailer Rental Service Areas | ${brandName}`, description: 'Browse 50 state guides and 246 city pages for mobile kitchen trailer pricing, planned delivery ranges, service hours, and availability.' }
+  if (path === '/services/') return { title: `Temporary Facility Rental Inventory | ${brandName}`, description: 'Explore nine temporary facility categories led by mobile kitchens, dishwashing trailers, and refrigeration trailers.' }
+  if (path === '/rental-calculator/') return { title: `Mobile Kitchen Trailer Starting Price Estimator | ${brandName}`, description: 'Build a location-specific mobile kitchen trailer starting estimate using published city pricing and planning ETA data.' }
+  if (path === '/contact-us/') return { title: `Request Mobile Kitchen Trailer Availability | ${brandName}`, description: 'Prepare the project details needed for a location-specific mobile kitchen trailer rental plan and quote.' }
   const bits = path.split('/').filter(Boolean)
   const city = cityBySlug(bits.at(-1) || '')
-  if (city) return { title: `${city.page_layout_data.title} | Portable Food Bank`, description: city.page_layout_data.description }
-  if (path.startsWith('/service-areas/')) { const state = stateBySlug(bits.at(-1) || ''); if (state) return { title: `${state.page_title} | Portable Food Bank`, description: state.description } }
+  if (city) return { title: `${city.page_layout_data.title} | ${brandName}`, description: city.page_layout_data.description }
+  if (path.startsWith('/service-areas/')) { const state = stateBySlug(bits.at(-1) || ''); if (state) return { title: `${state.page_title} | ${brandName}`, description: state.description } }
   const service = services.find((item) => item.slug === bits.at(-1))
-  if (service) return { title: `${service.name} | Portable Food Bank`, description: service.description }
-  return { title: 'Portable Food Bank | Mobile Kitchen Trailer Rentals', description: 'Plan temporary mobile kitchen capacity around phased renovations, repairs, and food-service changes.' }
+  if (service) return { title: `${service.name} | ${brandName}`, description: service.description }
+  return { title: `${brandName} | Mobile Kitchen Trailer Rentals`, description: 'Plan temporary mobile kitchen capacity around phased renovations, repairs, and food-service changes.' }
 }
 
 for (const path of routes) {
@@ -41,7 +42,7 @@ for (const path of routes) {
       {
         '@type': 'Organization',
         '@id': organizationId,
-        name: 'Portable Food Bank',
+        name: brandName,
         url: `${origin}/`,
         logo: `${origin}/portable-food-bank-logo.png`,
         telephone: '+1-888-385-5513',
@@ -50,7 +51,7 @@ for (const path of routes) {
       {
         '@type': 'WebSite',
         '@id': websiteId,
-        name: 'Portable Food Bank',
+        name: brandName,
         url: `${origin}/`,
         publisher: { '@id': organizationId },
       },
@@ -85,7 +86,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://w
 await writeFile(join(dist, 'sitemap.xml'), sitemap)
 await writeFile(join(process.cwd(), 'public', 'sitemap.xml'), sitemap)
 
-const notFoundTemplate = template.replace('<!--app-html-->', renderToString(<App/>)).replace(/<title>.*?<\/title>/, '<title>Page not found | Portable Food Bank</title>')
+const notFoundTemplate = template.replace('<!--app-html-->', renderToString(<App/>)).replace(/<title>.*?<\/title>/, `<title>Page not found | ${brandName}</title>`)
   .replace(/<meta name="robots" content=".*?" \/>\s*/g, '')
   .replace(/<meta name="googlebot" content=".*?" \/>\s*/g, '')
   .replace(/<link rel="canonical" href=".*?" \/>/, '')
